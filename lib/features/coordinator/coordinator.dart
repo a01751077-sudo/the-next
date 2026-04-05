@@ -6,3 +6,5 @@
 export 'task_coordinator.dart';
 export 'progress_tracker.dart';
 export 'result_aggregator.dart';
+export 'master_task_list.dart';
+export 'integration_coordinator.dart';
