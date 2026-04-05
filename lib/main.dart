@@ -5,6 +5,7 @@ import 'screens/p2p_screen.dart';
 import 'screens/communication_screen.dart';
 import 'screens/financial_screen.dart';
 import 'screens/gaming_screen.dart';
+import 'screens/jobs_screen.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -42,6 +43,7 @@ class _MainNavigationState extends State<MainNavigation> {
     const CommunicationScreen(),
     const FinancialScreen(),
     const GamingScreen(),
+    const JobsScreen(),
   ];
 
   @override
@@ -85,6 +87,11 @@ class _MainNavigationState extends State<MainNavigation> {
             icon: Icon(Icons.sports_esports_outlined),
             selectedIcon: Icon(Icons.sports_esports),
             label: 'Gaming',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.work_outline),
+            selectedIcon: Icon(Icons.work),
+            label: 'Jobs',
           ),
         ],
       ),
