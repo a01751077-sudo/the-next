@@ -8,7 +8,43 @@ import 'screens/gaming_screen.dart';
 import 'screens/jobs_screen.dart';
 import 'theme/app_theme.dart';
 
-void main() {
+/// Resource Governor - Enforces system limits
+class ResourceGovernor {
+  static const double maxRAM = 0.20; // 20% of available RAM
+  static const double maxStorage = 0.03; // 3% of storage
+  static const int maxThreads = 8;
+
+  static Future<bool> checkResources() async {
+    // Placeholder for resource checking
+    // In production: monitor RAM, storage, threads
+    return true;
+  }
+}
+
+/// Security check before app starts
+Future<bool> performSecurityCheck() async {
+  // Check for tampering, verify integrity
+  // In production: verify signatures, check root/jailbreak
+  return true;
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Security check BEFORE running app
+  bool secure = await performSecurityCheck();
+  if (!secure) {
+    runApp(const BlockedApp());
+    return;
+  }
+
+  // Check resource limits
+  bool resourcesOk = await ResourceGovernor.checkResources();
+  if (!resourcesOk) {
+    runApp(const ResourceLimitApp());
+    return;
+  }
+
   runApp(const ThePlatformApp());
 }
 
@@ -94,6 +130,86 @@ class _MainNavigationState extends State<MainNavigation> {
             label: 'Jobs',
           ),
         ],
+      ),
+    );
+  }
+}/// App shown when security check fails
+class BlockedApp extends StatelessWidget {
+  const BlockedApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'THE PLATFORM - BLOCKED',
+      theme: AppTheme.darkTheme,
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.lock,
+                size: 80,
+                color: AppTheme.errorColor,
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Security Check Failed',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.errorColor,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Device failed security verification',
+                style: TextStyle(color: AppTheme.textSecondary),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// App shown when resource limits exceeded
+class ResourceLimitApp extends StatelessWidget {
+  const ResourceLimitApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'THE PLATFORM - RESOURCE LIMIT',
+      theme: AppTheme.darkTheme,
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.memory,
+                size: 80,
+                color: AppTheme.warningColor,
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Resource Limit Exceeded',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.warningColor,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'System resources exceeded limits',
+                style: TextStyle(color: AppTheme.textSecondary),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
